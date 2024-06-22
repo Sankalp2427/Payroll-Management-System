@@ -1,0 +1,63 @@
+Designing a payroll management system using SQL involves creating a structured database to manage various components such as employee information, salary details, attendance records, and payroll processing.
+
+Requirements Gathering
+Initially, I identified the key components of the payroll system: employee information, salary details, attendance records, deductions, bonuses, and payroll processing. This understanding guided the creation of the necessary tables and their relationships.
+
+Database Design
+Employee Table
+I started by designing the Employee table to store essential employee details like ID, name, contact information, department, position, and joining date. This table forms the foundation for linking other payroll-related data.
+
+CREATE TABLE Employee (
+    EmployeeID INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Email VARCHAR(100),
+    PhoneNumber VARCHAR(15),
+    Department VARCHAR(50),
+    Position VARCHAR(50),
+    JoiningDate DATE
+);
+
+Salary Table
+Next, I created the Salary table to store salary details, including basic salary, allowances, deductions, and net salary, all linked to the employee through EmployeeID.
+
+CREATE TABLE Salary (
+    SalaryID INT PRIMARY KEY AUTO_INCREMENT,
+    EmployeeID INT,
+    BasicSalary DECIMAL(10, 2),
+    Allowances DECIMAL(10, 2),
+    Deductions DECIMAL(10, 2),
+    NetSalary DECIMAL(10, 2),
+    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID)
+);
+
+Attendance Table
+The Attendance table was designed to record daily attendance, marking employees as present, absent, or on leave, linked again via EmployeeID.
+
+
+CREATE TABLE Attendance (
+    AttendanceID INT PRIMARY KEY AUTO_INCREMENT,
+    EmployeeID INT,
+    AttendanceDate DATE,
+    Status ENUM('Present', 'Absent', 'Leave'),
+    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID)
+);
+
+
+Payroll Table
+Finally, I created the Payroll table to manage payroll processing, recording payments for specific pay periods, also linked to the employee through EmployeeID.
+
+CREATE TABLE Payroll (
+    PayrollID INT PRIMARY KEY AUTO_INCREMENT,
+    EmployeeID INT,
+    PayPeriodStart DATE,
+    PayPeriodEnd DATE,
+    PaymentDate DATE,
+    TotalAmount DECIMAL(10, 2),
+    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID)
+);
+
+INSERT INTO Employee (FirstName, LastName, Email, PhoneNumber, Department, Position, JoiningDate) 
+VALUES ('John', 'Doe', 'john.doe@example.com', '1234567890', 'HR', 'Manager', '2020-01-01');
+
+This comprehensive approach ensured the payroll management system could efficiently handle various payroll-related tasks, from tracking employee details to processing payments.
